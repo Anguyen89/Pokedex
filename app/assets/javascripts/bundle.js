@@ -19756,8 +19756,8 @@
 	    });
 	  },
 
-	  fetchPokemon: function fetchPokemon(id) {
-	    ApiUtil.fetchPokemon(id, this.receiveSinglePokemon);
+	  fetchSinglePokemon: function fetchSinglePokemon(id) {
+	    ApiUtil.fetchSinglePokemon(id, this.receiveSinglePokemon);
 	  },
 
 	  fetchAllPokemons: function fetchAllPokemons() {

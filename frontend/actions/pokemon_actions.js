@@ -20,8 +20,8 @@ var PokemonActions = {
     });
   },
 
-  fetchPokemon: function(id){
-    ApiUtil.fetchPokemon(id, this.receiveSinglePokemon);
+  fetchSinglePokemon: function(id){
+    ApiUtil.fetchSinglePokemon(id, this.receiveSinglePokemon);
   },
 
   fetchAllPokemons: function(){
