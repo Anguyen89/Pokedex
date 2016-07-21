@@ -8,6 +8,12 @@ var PokemonConstants = require('../constants/pokemon_constants');
 var _pokemons = {};
 
 
+PokemonStore.find = function(id){
+  if (_pokemons[id]){
+    return _pokemons[id];
+  }
+};
+
 PokemonStore.all = function(){
   var pokemon = [];
   for (var id in _pokemons){
