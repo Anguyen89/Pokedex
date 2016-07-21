@@ -2,9 +2,9 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 
 
-window.ApiUtil = require('./utils/api_util.js');
-
+var PokemonIndex = require('./components/pokemon_index');
+// window.ApiUtil = require('./utils/api_util');
 
 document.addEventListener("DOMContentLoaded", function(){
-  ReactDOM.render(<div>Hello</div>, document.getElementById('root'));
+  ReactDOM.render(<PokemonIndex/>, document.getElementById('root'));
 });

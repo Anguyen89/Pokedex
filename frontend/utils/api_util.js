@@ -1,15 +1,22 @@
 
 var PokemonActions = require('../actions/pokemon_actions');
 
+
+
 var ApiUtil  = {
+
+
+  fetchSinglePokemon: function(id, cb){
+    $.ajax({
+      url: 'api/pokemon/' + id,
+      success: cb
+    });
+  },
   fetchAllPokemons: function(cb){
     $.ajax({
       url: "api/pokemon",
-      method: "GET",
-      success: function(pokemon){
-        console.log(pokemon);
-        PokemonActions.receiveAllPokemons(pokemon);
-      }
+      success: cb
+
     });
   }
 };

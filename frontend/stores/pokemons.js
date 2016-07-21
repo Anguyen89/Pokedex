@@ -18,13 +18,31 @@ PokemonStore.all = function(){
   return pokemon;
 };
 
-PokemonStore.resetPokemon = function(pokemon){
+var resetPokemon = function(pokemon){
   _pokemons[pokemon.id] = pokemon;
 };
 
-PokemonStore.resetPokemons = function(pokemons){
+var resetPokemons = function(pokemons){
+  console.log("reseting");
   _pokemons = {};
-  pokemons.forEach(function(pokemon, id){
-    _pokemons[id] = pokemon;
+  console.log(pokemons);
+  pokemons.forEach(function(pokemon){
+    _pokemons[pokemon.id] = pokemon;
   });
 };
+
+
+PokemonStore.__onDispatch = function(payload){
+  switch(payload.actionType){
+    case PokemonConstants.POKEMONS_RECEIVED:
+      resetPokemons(payload.pokemons);
+      PokemonStore.__emitChange();
+      break;
+    case PokemonConstants.POKEMON_RECEIVED:
+      resetPokemon(payload.pokemon);
+      PokemonStore.__emitChange();
+      break;
+  }
+};
+
+module.exports = PokemonStore;
