@@ -50,23 +50,24 @@
 	var ReactDOM = __webpack_require__(158);
 	var Router = __webpack_require__(186).Router;
 	var Route = __webpack_require__(186).Route;
+	var hashHistory = __webpack_require__(186).hashHistory;
 
 	var App = __webpack_require__(249);
-	// var PokemonDetail = require('./components/pokemon_detail');
+	var PokemonDetail = __webpack_require__(250);
 	// var ToyDetail = require('./components/toy_detail');
 
 	var routes = React.createElement(
 	  Router,
 	  { path: '/', component: App },
-	  React.createElement(
-	    Route,
-	    { path: '/pokemon/:pokemonId', component: PokemonDetail },
-	    React.createElement(Route, { path: 'toys/:toy_id', component: ToyDetail })
-	  )
+	  React.createElement(Route, { path: '/pokemon/:pokemonId', component: PokemonDetail })
 	);
 
 	document.addEventListener("DOMContentLoaded", function () {
-	  ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
+	  ReactDOM.render(React.createElement(
+	    Router,
+	    { history: hashHistory },
+	    routes
+	  ), document.getElementById('root'));
 	});
 
 /***/ },
@@ -26656,25 +26657,33 @@
 /* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	var React = __webpack_require__(1);
 
 	var PokemonIndexItem = React.createClass({
-	  displayName: "PokemonIndexItem",
+	  displayName: 'PokemonIndexItem',
 
+
+	  contextTypes: {
+	    router: React.PropTypes.object.isRequired
+	  },
+
+	  showDetail: function showDetail() {
+	    this.context.router.push('/pokemon/' + this.props.pokemon.id);
+	  },
 
 	  render: function render() {
 	    return React.createElement(
-	      "li",
-	      { className: "poke-list-item" },
+	      'li',
+	      { className: 'poke-list-item', onClick: this.showDetail },
 	      React.createElement(
-	        "p",
+	        'p',
 	        null,
 	        this.props.pokemon.name
 	      ),
 	      React.createElement(
-	        "p",
+	        'p',
 	        null,
 	        this.props.pokemon.poke_type
 	      )
@@ -32329,6 +32338,74 @@
 	});
 
 	module.exports = App;
+
+/***/ },
+/* 250 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var React = __webpack_require__(1);
+	var PokemonStore = __webpack_require__(167);
+	var PokemonActions = __webpack_require__(160);
+
+	var PokemonDetail = React.createClass({
+	  displayName: 'PokemonDetail',
+
+	  getStateFromStore: function getStateFromStore() {
+	    return { pokemon: PokemonStore.find(parseInt(this.props.params.pokemonId)) };
+	  },
+
+	  getInitialState: function getInitialState() {
+	    return { pokemon: this.getStateFromStore() };
+	  },
+
+	  componentWillReceiveProps: function componentWillReceiveProps(newProps) {
+	    PokemonActions.fetchSinglePokemon(this.props.params.pokemonId);
+	  },
+
+	  _onChange: function _onChange() {
+	    this.setState(this.getStateFromStore());
+	  },
+
+	  componentDidMount: function componentDidMount() {
+	    this.detailListener = PokemonStore.addListener(this._onChange);
+	    PokemonActions.fetchSinglePokemon(parseInt(this.props.params.pokemonId));
+	  },
+
+	  componentWillUnmount: function componentWillUnmount() {
+	    this.detailListener.remove();
+	  },
+
+	  render: function render() {
+	    var _this = this;
+
+	    return React.createElement(
+	      'div',
+	      null,
+	      React.createElement(
+	        'div',
+	        { className: 'pokemon-detail-pane' },
+	        React.createElement(
+	          'div',
+	          { className: 'detail' },
+	          React.createElement('img', { src: this.state.pokemon.image_url }),
+	          ['name', 'attack', 'defense', 'poke_type', 'moves'].map(function (attr) {
+	            return React.createElement(
+	              'p',
+	              { key: attr },
+	              attr,
+	              ': ',
+	              _this.state.pokemon[attr]
+	            );
+	          })
+	        )
+	      )
+	    );
+	  }
+	});
+
+	module.exports = PokemonDetail;
 
 /***/ }
 /******/ ]);
