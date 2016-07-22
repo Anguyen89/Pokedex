@@ -6,11 +6,12 @@ var hashHistory = require('react-router').hashHistory;
 
 var App = require('./components/app');
 var PokemonDetail = require('./components/pokemon_detail');
-// var ToyDetail = require('./components/toy_detail');
+var ToyDetail = require('./components/toys_detail');
 
 var routes = (
   <Router path="/" component={App}>
     <Route path="/pokemon/:pokemonId" component={PokemonDetail}>
+      <Route path="/toys/:toyId" component={ToyDetail} />
     </Route>
   </Router>
 );

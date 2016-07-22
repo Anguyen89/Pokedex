@@ -1,6 +1,7 @@
 var React = require('react');
 var PokemonStore = require('../stores/pokemons');
 var PokemonActions = require('../actions/pokemon_actions');
+var ToysIndex = require('../components/toys_index');
 
 
 var PokemonDetail = React.createClass({
@@ -39,7 +40,10 @@ var PokemonDetail = React.createClass({
                       return <p key={attr}>{attr}: {this.state.pokemon[attr]}</p>;
                   })}
             </div>
+            <h2 className="detail-header">Toys: </h2>
+            <ToysIndex toys={this.state.pokemon.toys}/>
           </div>
+          {this.props.children}
         </div>
     );
   }
